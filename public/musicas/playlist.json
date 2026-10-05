@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Exemplo de Louvor",
+    "artist": "Artista",
+    "url": "musicas/exemplo.mp3",
+    "cover": "logo-radio.png",
+    "type": "music"
+  }
+]
