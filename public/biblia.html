@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#061426">
+<title>Bíblia Sagrada • Web Rádio Vem Comigo Deus</title>
+<style>
+:root{--bg:#04101d;--p:#0b2340;--gold:#f4c64c;--text:#fff;--muted:#a9bad0;--line:#f4c64c44}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(#06172b,#020710);color:var(--text);font-family:Arial,sans-serif}
+header{position:sticky;top:0;z-index:9;background:#061426ee;border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:10px}
+header img{width:44px;height:44px;border-radius:50%;border:2px solid var(--gold)}
+header b{color:var(--gold)}main{max-width:520px;margin:auto;padding:18px 14px 40px}
+.card{background:var(--p);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+select,input{width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:#07192d;color:#fff;margin-top:8px}
+.row{display:grid;grid-template-columns:1fr 110px;gap:10px}.btn{display:inline-block;padding:12px 14px;border-radius:12px;background:var(--gold);color:#081426;text-decoration:none;font-weight:900;border:0}
+.verse{padding:10px 0;border-bottom:1px solid #ffffff12;line-height:1.55}.verse b{color:var(--gold);margin-right:6px}
+.muted{color:var(--muted)}h1,h2{margin:.3em 0}
+</style>
+</head>
+<body>
+<header><img src="logo-radio.png" alt=""><div><b>Bíblia Sagrada</b><div style="font-size:12px;color:#a9bad0">Web Rádio Vem Comigo Deus</div></div></header>
+<main>
+<a class="btn" href="index.html">← Voltar para a rádio</a>
+<div class="card">
+  <h2>📖 Bíblia</h2>
+  <p class="muted">Leitura em formato de celular.</p>
+  <div class="row">
+    <select id="book">
+      <option value="Ps">Salmos</option>
+      <option value="Prov">Provérbios</option>
+      <option value="Isa">Isaías</option>
+      <option value="Matt">Mateus</option>
+      <option value="Mark">Marcos</option>
+      <option value="Luke">Lucas</option>
+      <option value="John">João</option>
+      <option value="Acts">Atos</option>
+      <option value="Rom">Romanos</option>
+      <option value="1Cor">1 Coríntios</option>
+      <option value="2Cor">2 Coríntios</option>
+      <option value="Gal">Gálatas</option>
+      <option value="Eph">Efésios</option>
+      <option value="Phil">Filipenses</option>
+      <option value="Col">Colossenses</option>
+      <option value="1Thess">1 Tessalonicenses</option>
+      <option value="2Thess">2 Tessalonicenses</option>
+      <option value="1Tim">1 Timóteo</option>
+      <option value="2Tim">2 Timóteo</option>
+      <option value="Heb">Hebreus</option>
+      <option value="Jas">Tiago</option>
+      <option value="1Pet">1 Pedro</option>
+      <option value="2Pet">2 Pedro</option>
+      <option value="1John">1 João</option>
+      <option value="Rev">Apocalipse</option>
+    </select>
+    <input id="chapter" type="number" min="1" value="23" aria-label="Capítulo">
+  </div>
+  <button class="btn" id="load" style="margin-top:12px">Abrir capítulo</button>
+</div>
+<div id="title" class="card"><b>Salmos 23</b></div>
+<div id="verses" class="card"><p class="muted">Carregando...</p></div>
+</main>
+<script>
+const names={Ps:'Salmos',Prov:'Provérbios',Isa:'Isaías',Matt:'Mateus',Mark:'Marcos',Luke:'Lucas',John:'João',Acts:'Atos',Rom:'Romanos','1Cor':'1 Coríntios','2Cor':'2 Coríntios',Gal:'Gálatas',Eph:'Efésios',Phil:'Filipenses',Col:'Colossenses','1Thess':'1 Tessalonicenses','2Thess':'2 Tessalonicenses','1Tim':'1 Timóteo','2Tim':'2 Timóteo',Heb:'Hebreus',Jas:'Tiago','1Pet':'1 Pedro','2Pet':'2 Pedro','1John':'1 João',Rev:'Apocalipse'};
+async function openChapter(){
+ const b=document.getElementById('book').value;
+ const n=Number(document.getElementById('chapter').value||1);
+ const box=document.getElementById('verses'); box.innerHTML='<p class="muted">Carregando...</p>';
+ document.getElementById('title').innerHTML='<b>'+names[b]+' '+n+'</b>';
+ try{
+  const url='https://raw.githubusercontent.com/midvash/bible-data/main/versions/pt/almeida-livre/books/'+b+'.json';
+  const d=await fetch(url).then(r=>{if(!r.ok)throw new Error();return r.json()});
+  const c=d.chapters.find(x=>Number(x.chapter)===n);
+  if(!c) throw new Error();
+  box.innerHTML=c.verses.map(v=>'<div class="verse"><b>'+v.number+'</b>'+v.text+'</div>').join('');
+ }catch{
+  box.innerHTML='<p class="muted">Este livro/capítulo ainda não carregou. Tente outro capítulo.</p>';
+ }
+}
+document.getElementById('load').onclick=openChapter;
+openChapter();
+</script>
+</body></html>
