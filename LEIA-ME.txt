@@ -1,0 +1,22 @@
+SITE PADRÃO — WEB RÁDIO VEM COMIGO DEUS
+
+Visual oficial:
+- azul-marinho profundo
+- dourado
+- branco
+- cartões alinhados e responsivos
+- formato celular corrigido
+
+Para atualizar no Render:
+Substitua na pasta public:
+index.html
+style.css
+app.js
+biblia.html
+pedido-oracao.html
+pedidos.html
+
+Mantenha o arquivo logo-radio.jpeg já existente no repositório.
+
+O player usa /radio-stream, portanto continua ligado ao backend do Render/Caster.
+A grade contém somente a programação atual.
